@@ -1,4 +1,4 @@
-MyGui := Gui(,"Vonage Logout")
+MyGui := Gui(,"Example Logout")
 MyGui.Opt("AlwaysOnTop")
 MyGui.SetFont("s12")
 MyGui.Add("Text","X80 Y20", "Leave Now or Later?")
@@ -15,7 +15,7 @@ MyGui.Destroy
 
 If !WinExist("Vonage ContactPad")
 {
-MsgBox "Vonage's window is already closed!", "Error", "4112"
+MsgBox "Example's window is already closed!", "Error", "4112"
 MsgBox "Double-Check that you're logget out!", "Reminder", "4144"
 ExitApp
 }
@@ -53,7 +53,7 @@ Vonage_Logout(*) {
 
 MyGui.Destroy
 
-If WinExist("Vonage ContactPad")
+If WinExist("Example ContactPad")
 {
 	WinSetAlwaysOnTop
 	WinActivate
@@ -61,7 +61,7 @@ If WinExist("Vonage ContactPad")
 }
 else
 {
-MsgBox "Vonage's window is already closed!", "Error", "4112"
+MsgBox "Example's window is already closed!", "Error", "4112"
 MsgBox "Double Check that you're logget out!", "Reminder", "4144"
 ExitApp
 }
@@ -74,7 +74,7 @@ Send "{End}"
 Click
 
 Sleep 4000
-MsgBox "I'll be back...", "Terminator", "4144 T3"
+MsgBox "Systems are going off in 3''", "Shutdown", "4144 T3"
 Shutdown 13
 
 }
