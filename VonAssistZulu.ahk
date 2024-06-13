@@ -69,12 +69,11 @@ ExitApp
 CoordMode "Mouse", "Client"
 
 Click 102, 111
-MouseMove 65, 481
 Send "{End}"
-Click
+Send "{Enter}"
 
 Sleep 4000
-MsgBox "Systems are going off in 3''", "Shutdown", "4144 T3"
+MsgBox "All Systems Offline''", "Shutdown", "4144 T3"
 Shutdown 13
 
 }
