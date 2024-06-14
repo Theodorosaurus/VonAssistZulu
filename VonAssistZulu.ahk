@@ -1,49 +1,103 @@
-MyGui := Gui(,"Example Logout")
+TraySetIcon(A_ScriptDir "\Example.ico")
+MyGui := Gui(,"Example Assistant")
 MyGui.Opt("AlwaysOnTop")
 MyGui.SetFont("s12")
-MyGui.Add("Text","X80 Y20", "Leave Now or Later?")
+MyGui.Add("Text","X90 Y20", "When to leave?")
 MyGui.SetFont("s10 w700")
-MyGui.Add("Button", "x70 y50 w80 h25", "Now").OnEvent("Click", Vonage_Logout)
-MyGui.Add("Button", "x170 y50 w80 h25", "Later").OnEvent("Click", Timer)
+MyGui.Add("Button", "x60 y50 w80 h25", "Now").OnEvent("Click", Example_Logout)
+MyGui.Add("Button", "x160 y50 w80 h25", "Later").OnEvent("Click", Later)
+MyGui.Add("Button", "x110 y80 w80 h25", "Break").OnEvent("Click", On_Break)
 MyGui.Show("w300 h120")
 
+Later(*) {
 
-Timer(*) {
+Alpha:
 
-Label101:
 MyGui.Destroy
 
-If !WinExist("Vonage ContactPad")
+If !WinExist("Example ContactPad")
 {
-MsgBox "Example's window is already closed!", "Error", "4112"
-MsgBox "Double-Check that you're logget out!", "Reminder", "4144"
-ExitApp
+	MsgBox "Example's window is already closed!", "Error", "4112"
+	MsgBox "Double Check that you're logged out!", "Reminder", "4144"
+	ExitApp
 }
 
-phd := InputBox("`tEnter time in minutes:", "Timer", "w250 h100")
+foxtrot := InputBox("`tEnter time in minutes:", "Timer", "w250 h100")
 
-If phd.result = "Cancel"
+If foxtrot.result = "Cancel"
 {
-ExitApp
+	ExitApp
 }
 
-If !IsNumber(phd.value)
+If !IsNumber(foxtrot.value)
 {
-MsgBox "You must enter integer numbers only!", "Error", "4112"
-MsgBox "Try again", "Prompt", "4160"
-GoTo Label101
+	MsgBox "You must enter integer numbers only!", "Error", "4112"
+	MsgBox "Try again", "Prompt", "4160"
+	GoTo Alpha
 }
 
 
-Decision := MsgBox("Log out & Shutdown in " phd.value " minutes`n`nClick OK to Continue or Cancel to Abort Timer.", "Info", "4161")
+Echo := MsgBox("Log out & Shutdown in " foxtrot.value " minutes`n`nClick OK to Continue or Cancel to Abort Timer.", "Info", "4161")
 
-If (Decision = "OK")
+If (Echo = "OK")
 {
-	Sleep phd.value*60*1000
-	Vonage_Logout
+	Sleep foxtrot.value*60*1000
+	Example_Logout
 }
-else if (Decision = "Cancel")
+else if (Echo = "Cancel")
 {
+	ExitApp
+}
+
+}
+
+On_Break(*) {
+
+Bravo:
+
+MyGui.Destroy
+If !WinExist("Example ContactPad")
+{
+	MsgBox "Example's window is already closed!", "Error", "4112"
+	MsgBox "Launch Example from Browser's extensions!", "Reminder", "4144"
+	ExitApp
+}
+
+MsgBox "You must keep Example's window open for this to work properly!", "Important", "4161"
+
+tango := InputBox("`tEnter time in minutes:", "Timer", "w250 h100")
+
+If tango.result = "Cancel"
+{
+	ExitApp
+}
+
+If !IsNumber(tango.value)
+{
+	MsgBox "You must enter numbers only!", "Error", "4112"
+	MsgBox "Try again", "Prompt", "4160"
+	GoTo Bravo
+}
+
+romeo := MsgBox("Break for " tango.value " minutes`n`nClick OK to Continue or Cancel to Abort Timer.", "Info", "4161")
+
+If (romeo = "OK")
+{
+	Sleep tango.value*60*1000
+	WinSetAlwaysOnTop 1, "Example ContactPad"
+	WinActivate "Vonage ContactPad"
+	WinMove 0, 0, 300, 600, "Example ContactPad"
+	CoordMode "Mouse", "Client"	
+	Click 102, 111 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @here <<<<<<<<<<<<<<<<<<<<<<<<<
+	Send "{Down 14}"
+	Send "{Enter}"
+	Loop 10
+	{ 
+	SoundBeep 850, 500 
+	}
+}
+else if (romeo = "Cancel")
+{	
 	ExitApp
 }
 
@@ -57,25 +111,24 @@ If WinExist("Example ContactPad")
 {
 	WinSetAlwaysOnTop
 	WinActivate
-	WinMove 0, 0, , , "Vonage ContactPad"
+	WinMove 0, 0, 300, 600, "Example ContactPad"
 }
 else
 {
-MsgBox "Example's window is already closed!", "Error", "4112"
-MsgBox "Double Check that you're logget out!", "Reminder", "4144"
-ExitApp
+	MsgBox "Example's window is already closed!", "Error", "4112"
+	MsgBox "Double Check that you're logged out!", "Reminder", "4144"
+	ExitApp
 }
 
 CoordMode "Mouse", "Client"
-
-Click 102, 111
+Click 102, 111  ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @here <<<<<<<<<<<<<<<<<<<<<<<<<
 Send "{End}"
 Send "{Enter}"
 
 Sleep 4000
-MsgBox "All Systems Offline''", "Shutdown", "4144 T3"
+MsgBox "All Systems Offline", "Shutdown", "4144 T3"
 Shutdown 13
 
 }
-#SingleInstance
 
+#SingleInstance
