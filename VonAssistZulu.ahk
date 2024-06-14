@@ -1,4 +1,6 @@
-TraySetIcon(A_ScriptDir "\Example.ico")
+SetTitleMatchMode 3
+TraySetIcon(A_ScriptDir "\ExampleLogo.ico")
+
 MyGui := Gui(,"Example Assistant")
 MyGui.Opt("AlwaysOnTop")
 MyGui.SetFont("s12")
@@ -31,7 +33,7 @@ If foxtrot.result = "Cancel"
 
 If !IsNumber(foxtrot.value)
 {
-	MsgBox "You must enter integer numbers only!", "Error", "4112"
+	MsgBox "You must enter numbers only!", "Error", "4112"
 	MsgBox "Try again", "Prompt", "4160"
 	GoTo Alpha
 }
@@ -59,7 +61,7 @@ MyGui.Destroy
 If !WinExist("Example ContactPad")
 {
 	MsgBox "Example's window is already closed!", "Error", "4112"
-	MsgBox "Launch Example from Browser's extensions!", "Reminder", "4144"
+	MsgBox "Launch Example from Chrome's extensions!", "Reminder", "4144"
 	ExitApp
 }
 
@@ -85,12 +87,14 @@ If (romeo = "OK")
 {
 	Sleep tango.value*60*1000
 	WinSetAlwaysOnTop 1, "Example ContactPad"
-	WinActivate "Vonage ContactPad"
-	WinMove 0, 0, 300, 600, "Example ContactPad"
+	WinActivate "Example ContactPad"
+	WinMove 0, 0, , , "Example ContactPad"
+	WinMaximize "Example ContactPad"
 	CoordMode "Mouse", "Client"	
 	Click 102, 111 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @here <<<<<<<<<<<<<<<<<<<<<<<<<
 	Send "{Down 14}"
 	Send "{Enter}"
+	TrayTip , "Break is over", "2"
 	Loop 10
 	{ 
 	SoundBeep 850, 500 
@@ -103,7 +107,7 @@ else if (romeo = "Cancel")
 
 }
 
-Vonage_Logout(*) {
+Example_Logout(*) {
 
 MyGui.Destroy
 
@@ -111,7 +115,15 @@ If WinExist("Example ContactPad")
 {
 	WinSetAlwaysOnTop
 	WinActivate
-	WinMove 0, 0, 300, 600, "Example ContactPad"
+	WinMove 0, 0, , , "Example ContactPad"
+	WinMaximize
+	CoordMode "Mouse", "Client"
+	Click 102, 111  ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @here <<<<<<<<<<<<<<<<<<<<<<<<<
+	Send "{End}"
+	Send "{Enter}"
+	Sleep 4000
+	MsgBox "All Systems Offline", "Shutdown", "4144 T3"
+	Shutdown 13
 }
 else
 {
@@ -119,15 +131,6 @@ else
 	MsgBox "Double Check that you're logged out!", "Reminder", "4144"
 	ExitApp
 }
-
-CoordMode "Mouse", "Client"
-Click 102, 111  ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @here <<<<<<<<<<<<<<<<<<<<<<<<<
-Send "{End}"
-Send "{Enter}"
-
-Sleep 4000
-MsgBox "All Systems Offline", "Shutdown", "4144 T3"
-Shutdown 13
 
 }
 
